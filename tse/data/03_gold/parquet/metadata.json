@@ -1,0 +1,98 @@
+[
+  {
+    "base": "datamart_candidatos_2022.parquet",
+    "camada": "gold_parquet",
+    "linhas": 29292,
+    "colunas": 22,
+    "schema": [
+      {
+        "coluna": "SQ_CANDIDATO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "NM_CANDIDATO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "NM_URNA_CANDIDATO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "NR_CPF_CANDIDATO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "SG_UF",
+        "tipo": "string"
+      },
+      {
+        "coluna": "SG_PARTIDO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "DS_CARGO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "DS_GENERO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "DS_COR_RACA",
+        "tipo": "string"
+      },
+      {
+        "coluna": "DS_OCUPACAO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "DS_GRAU_INSTRUCAO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "DT_NASCIMENTO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "DS_SIT_TOT_TURNO",
+        "tipo": "string"
+      },
+      {
+        "coluna": "Idade_2022",
+        "tipo": "double"
+      },
+      {
+        "coluna": "Status_Eleicao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "Total_Arrecadado",
+        "tipo": "double"
+      },
+      {
+        "coluna": "Total_Fundo_Publico",
+        "tipo": "double"
+      },
+      {
+        "coluna": "Total_Gasto",
+        "tipo": "double"
+      },
+      {
+        "coluna": "Total_Votos",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "Qtd_Municipios_Com_Voto",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "Pct_Fundo_Publico",
+        "tipo": "double"
+      },
+      {
+        "coluna": "Custo_Por_Voto",
+        "tipo": "double"
+      }
+    ]
+  }
+]
