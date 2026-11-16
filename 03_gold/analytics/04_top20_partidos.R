@@ -1,67 +1,42 @@
 ﻿# ==============================================================================
-# VISUALIZA��O 04: TOP 20 PARTIDOS (ELEI��ES 2024 - MG & SP)
+# ANALYTICS 04: TOP 20 PARTIDOS POR VOLUME DE RECEITAS (PÚBLICO VS PRIVADO)
 # ==============================================================================
-# Volume de Arrecada��o por Partido: Recursos P�blicos vs Privados.
 
 if (file.exists("utils_paths.R")) {
   source("utils_paths.R")
 } else {
   source("../../utils_paths.R")
 }
+source("03_gold/analytics/_helpers_vis.R")
 
-library(tidyverse)
-library(arrow)
-library(plotly)
-
-# 1. Carregar Datamart Ouro 2024
 datamart <- read_parquet("03_gold/data/datamart_candidatos_2024.parquet")
 
-# 2. Agrupamento por Partido e Top 20
-top_partidos <- datamart %>%
-  group_by(SG_PARTIDO) %>%
+top20 <- datamart %>%
+  group_by(sg_partido) %>%
   summarise(
-    Arrecadacao_Publica = sum(Total_Fundo_Publico, na.rm = TRUE),
-    Arrecadacao_Total = sum(Total_Arrecadado, na.rm = TRUE),
-    Arrecadacao_Privada = pmax(0, Arrecadacao_Total - Arrecadacao_Publica),
+    fundo_publico = sum(total_fundo_publico, na.rm = TRUE),
+    recursos_privados = pmax(sum(total_arrecadado, na.rm = TRUE) - fundo_publico, 0),
+    total = fundo_publico + recursos_privados,
     .groups = "drop"
   ) %>%
-  arrange(desc(Arrecadacao_Total)) %>%
-  head(20)
-
-partidos_long <- top_partidos %>%
-  select(SG_PARTIDO, Arrecadacao_Publica, Arrecadacao_Privada, Arrecadacao_Total) %>%
-  pivot_longer(
-    cols = c("Arrecadacao_Publica", "Arrecadacao_Privada"),
-    names_to = "Origem",
-    values_to = "Valor"
-  ) %>%
+  slice_max(total, n = 20) %>%
+  pivot_longer(cols = c(fundo_publico, recursos_privados), names_to = "origem", values_to = "valor") %>%
   mutate(
-    Origem = str_replace(Origem, "Arrecadacao_", "Origem: "),
-    SG_PARTIDO = reorder(SG_PARTIDO, Arrecadacao_Total)
+    origem = recode(origem, "fundo_publico" = "Fundo Público", "recursos_privados" = "Recursos Privados/Outros"),
+    sg_partido = fct_reorder(sg_partido, total)
   )
 
-# 3. Plotagem
-g4 <- ggplot(partidos_long, aes(
-  x = Valor, y = SG_PARTIDO, fill = Origem,
-  text = paste(
-    "Partido:", SG_PARTIDO,
-    "<br>", Origem, ":", scales::dollar(Valor, prefix = "R$ "),
-    "<br>Arrecada��o Total:", scales::dollar(Arrecadacao_Total, prefix = "R$ ")
-  )
+g4 <- ggplot(top20, aes(
+  x = valor / 1e6, y = sg_partido, fill = origem,
+  text = paste("Partido:", sg_partido, "<br>Origem:", origem, "<br>Valor: R$", round(valor / 1e6, 2), "Mi")
 )) +
-  geom_col(alpha = 0.9) +
-  scale_fill_manual(values = c("Origem: Publica" = "#c0392b", "Origem: Privada" = "#2980b9")) +
-  scale_x_continuous(labels = scales::label_number(scale_cut = scales::cut_short_scale(), prefix = "R$ ")) +
+  geom_col() +
+  scale_fill_manual(values = c("Fundo Público" = "#2563eb", "Recursos Privados/Outros" = "#f59e0b")) +
   labs(
-    title = "Top 20 Partidos: Financiamento de Campanha (Elei��es 2024 - MG & SP)",
-    subtitle = "De onde vem o dinheiro? (P�blico vs Privado)",
-    x = "Volume Total Arrecadado (R$)",
-    y = "Partido",
-    fill = "Tipo de Fundo"
+    title = "Top 20 Partidos por Arrecadação Total (Eleições 2024 - MG & SP)",
+    subtitle = "Composição entre Fundo Público e Recursos Privados (Milhões R$)",
+    x = "Volume Financeiro (Milhões R$)", y = NULL, fill = "Origem"
   ) +
-  theme_minimal() +
-  theme(legend.position = "bottom")
+  theme_minimal()
 
-# 4. Exibir no RStudio (Viewer)
-p4 <- ggplotly(g4, tooltip = "text")
-print(p4)
+salvar_e_exibir_plotly(g4, "04_top20_partidos.html")

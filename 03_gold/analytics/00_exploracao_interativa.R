@@ -1,82 +1,54 @@
 ﻿# ==============================================================================
-# ANALYTICS 00: EXPLORA��O INTERATIVA DOS DADOS (ELEI��ES 2024 - MG & SP)
+# ANALYTICS 00: EXPLORAÇÃO INTERATIVA (TSE 2024 + IBGE CENSO 2022)
 # ==============================================================================
-# Script r�pido para explora��o visual no Viewer do RStudio.
 
 if (file.exists("utils_paths.R")) {
   source("utils_paths.R")
 } else {
   source("../../utils_paths.R")
 }
-
-library(tidyverse)
-library(arrow)
+source("03_gold/analytics/_helpers_vis.R")
 library(reactable)
-library(plotly)
 
-# ------------------------------------------------------------------------------
-# 1. CARREGANDO OS DADOS SALVOS (Via Apache Arrow)
-# ------------------------------------------------------------------------------
-message("Carregando bases anal�ticas...")
+candidatos <- read_parquet("03_gold/data/datamart_candidatos_2024.parquet")
+integrado <- read_parquet("03_gold/data/datamart_eleitoral_socioeconomico_2024.parquet")
 
-candidatos_path <- "03_gold/data/datamart_candidatos_2024.parquet"
-if (!file.exists(candidatos_path)) {
-  candidatos_path <- "02_silver/data/tse/candidatos_clean.parquet"
-}
-
-candidatos <- read_parquet(candidatos_path)
-populacao <- read_parquet("01_bronze/data/ibge/populacao_2022.parquet")
-pib <- read_parquet("01_bronze/data/ibge/pib_municipal.parquet")
-
-# ------------------------------------------------------------------------------
-# 2. TABELAS INTERATIVAS (Explore os dados direto no RStudio)
-# ------------------------------------------------------------------------------
-
-# Tabela 1: Resumo Demogr�fico dos Candidatos por G�nero e Partido
+# Tabela 1: Candidatos por Partido e Gênero
 tabela_genero_partido <- candidatos %>%
-  group_by(SG_PARTIDO, DS_GENERO) %>%
-  summarise(Total = n(), .groups = "drop") %>%
-  pivot_wider(names_from = DS_GENERO, values_from = Total, values_fill = 0) %>%
-  mutate(Total_Geral = rowSums(across(where(is.numeric)))) %>%
-  arrange(desc(Total_Geral))
+  filter(!is.na(ds_genero)) %>%
+  count(sg_partido, ds_genero) %>%
+  pivot_wider(names_from = ds_genero, values_from = n, values_fill = 0) %>%
+  mutate(total_geral = rowSums(across(where(is.numeric)))) %>%
+  arrange(desc(total_geral))
 
-print(reactable(tabela_genero_partido, 
-                searchable = TRUE, 
-                striped = TRUE, 
-                highlight = TRUE,
-                defaultPageSize = 10,
-                theme = reactableTheme(
-                  borderColor = "#dfe2e5",
-                  stripedColor = "#f6f8fa",
-                  highlightColor = "#f0f5f9"
-                )))
+print(reactable(tabela_genero_partido, searchable = TRUE, striped = TRUE, highlight = TRUE, defaultPageSize = 10))
 
-# Tabela 2: Munic�pios mais Ricos vs Popula��o (IBGE)
-ibge_junto <- populacao %>%
-  inner_join(pib, by = "codigo_ibge") %>%
-  mutate(PIB_Per_Capita = pib / populacao) %>%
-  arrange(desc(PIB_Per_Capita))
+# Tabela 2: Municípios integrados (Representatividade + Socioeconomia)
+tabela_municipios <- integrado %>%
+  select(
+    sg_uf, nm_municipio, populacao_2022, pib_per_capita_reais,
+    pct_adm_publica_vab_2021, pct_mulheres_censo, pct_eleitos_mulheres,
+    gap_eleitos_mulheres, pct_negros_indigenas_censo, pct_eleitos_negros_indigenas,
+    gap_eleitos_negros_indigenas
+  ) %>%
+  arrange(desc(populacao_2022))
 
-print(reactable(ibge_junto %>% head(100), searchable = TRUE))
+print(reactable(tabela_municipios %>% head(150), searchable = TRUE, striped = TRUE))
 
-# ------------------------------------------------------------------------------
-# 3. GR�FICOS (ggplot2 + plotly)
-# ------------------------------------------------------------------------------
-
-# Gr�fico 1: Propor��o de Ra�a/Cor dos Candidatos (2024 - MG & SP)
-grafico_raca <- candidatos %>%
-  count(DS_COR_RACA) %>%
-  mutate(DS_COR_RACA = fct_reorder(DS_COR_RACA, n)) %>%
-  ggplot(aes(x = n, y = DS_COR_RACA, fill = DS_COR_RACA)) +
+# Gráfico Exploratório: Distribuição de Raça/Cor dos Candidatos (2024)
+g0 <- candidatos %>%
+  filter(!is.na(ds_cor_raca)) %>%
+  count(ds_cor_raca) %>%
+  mutate(ds_cor_raca = fct_reorder(ds_cor_raca, n)) %>%
+  ggplot(aes(x = n, y = ds_cor_raca, fill = ds_cor_raca,
+             text = paste("Cor/Raça:", ds_cor_raca, "<br>Candidatos:", format(n, big.mark = ".")))) +
   geom_col(show.legend = FALSE) +
-  theme_minimal() +
+  scale_x_continuous(labels = label_number(big.mark = ".")) +
+  scale_fill_viridis_d(option = "magma") +
   labs(
-    title = "Distribui��o de Ra�a/Cor dos Candidatos (Elei��es 2024 - MG & SP)",
-    x = "N�mero de Candidatos",
-    y = ""
+    title = "Distribuição de Cor/Raça dos Candidatos (Eleições 2024 - MG & SP)",
+    x = "Número de Candidatos", y = NULL
   ) +
-  scale_fill_viridis_d(option = "magma")
+  theme_minimal()
 
-print(ggplotly(grafico_raca))
-
-message("? Script executado! Confira a aba 'Viewer' no seu RStudio para ver as Tabelas e Gr�ficos Interativos.")
+salvar_e_exibir_plotly(g0, "00_exploracao_raca_candidatos.html")

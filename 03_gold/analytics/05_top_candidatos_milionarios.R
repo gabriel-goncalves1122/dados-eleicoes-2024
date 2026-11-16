@@ -1,60 +1,41 @@
 ﻿# ==============================================================================
-# VISUALIZA��O 05: TOP 30 CAMPANHAS MAIS CARAS (ELEI��ES 2024 - MG & SP)
+# ANALYTICS 05: TOP 25 CAMPANHAS DE PREFEITO DE MAIOR ORÇAMENTO (2024)
 # ==============================================================================
-# As maiores despesas contratadas para Prefeito e a taxa de sucesso nas urnas.
 
 if (file.exists("utils_paths.R")) {
   source("utils_paths.R")
 } else {
   source("../../utils_paths.R")
 }
+source("03_gold/analytics/_helpers_vis.R")
 
-library(tidyverse)
-library(arrow)
-library(plotly)
-
-# 1. Carregar Datamart Ouro 2024
 datamart <- read_parquet("03_gold/data/datamart_candidatos_2024.parquet")
 
-# 2. Top 30 Maiores Gastos para Prefeito
-top_milionarios <- datamart %>%
-  filter(CD_CARGO == "11") %>% # Prefeito
-  arrange(desc(Total_Gasto)) %>%
-  head(30) %>%
+top_gastos <- datamart %>%
+  filter(cd_cargo == 11L, total_gasto > 0) %>%
+  slice_max(total_gasto, n = 25) %>%
   mutate(
-    Nome_Exibicao = paste0(NM_URNA_CANDIDATO, " (", SG_PARTIDO, " - ", NM_UE, ")"),
-    Nome_Exibicao = reorder(Nome_Exibicao, Total_Gasto)
+    label_cand = paste0(nm_urna_candidato, " (", sg_partido, " - ", nm_municipio, "/", sg_uf, ")"),
+    label_cand = fct_reorder(label_cand, total_gasto),
+    resultado = ifelse(is_eleito, "Eleito", "Não Eleito")
   )
 
-# 3. Plotagem
-g5 <- ggplot(top_milionarios, aes(
-  x = Total_Gasto, y = Nome_Exibicao, fill = Status_Eleicao,
+g5 <- ggplot(top_gastos, aes(
+  x = total_gasto / 1e6, y = label_cand, fill = resultado,
   text = paste(
-    "Candidato:", NM_URNA_CANDIDATO,
-    "<br>Munic�pio:", NM_UE, "-", SG_UF,
-    "<br>Partido:", SG_PARTIDO,
-    "<br>Total Gasto:", scales::dollar(Total_Gasto, prefix = "R$ "),
-    "<br>Total Votos:", Total_Votos,
-    "<br>Situa��o:", Status_Eleicao
+    "Candidato:", nm_urna_candidato,
+    "<br>Município:", nm_municipio, "-", sg_uf,
+    "<br>Gasto: R$", round(total_gasto / 1e6, 2), "Mi",
+    "<br>Votos:", format(total_votos, big.mark = "."),
+    "<br>Status:", status_eleicao
   )
 )) +
-  geom_col(alpha = 0.9) +
-  scale_fill_manual(values = c("Eleito" = "#27ae60", "2� Turno" = "#f39c12", "N�o Eleito" = "#c0392b")) +
-  scale_x_continuous(labels = scales::label_number(scale_cut = scales::cut_short_scale(), prefix = "R$ ")) +
-  facet_wrap(~Status_Eleicao, scales = "free_y") +
+  geom_col() +
+  scale_fill_manual(values = c("Eleito" = "#10b981", "Não Eleito" = "#ef4444")) +
   labs(
-    title = "As 30 Campanhas para Prefeito que Mais Gastaram (2024 - MG & SP)",
-    subtitle = "Sucesso x Fracasso das Campanhas com Maior Or�amento Financeiro",
-    x = "Total Gasto na Campanha (R$)",
-    y = "",
-    fill = "Situa��o"
+    title = "Top 25 Maiores Orçamentos para Prefeito (2024 - MG & SP)",
+    x = "Gasto Contratado (Milhões R$)", y = NULL, fill = "Resultado"
   ) +
-  theme_minimal() +
-  theme(
-    legend.position = "none",
-    strip.text = element_text(face = "bold", size = 11)
-  )
+  theme_minimal()
 
-# 4. Exibir no RStudio (Viewer)
-p5 <- ggplotly(g5, tooltip = "text")
-print(p5)
+salvar_e_exibir_plotly(g5, "05_top_campanhas_milionarias.html")
