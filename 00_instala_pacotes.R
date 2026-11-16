@@ -7,6 +7,13 @@ if (is.null(getOption("repos")) || getOption("repos")["CRAN"] == "@CRAN@") {
   options(repos = c(CRAN = "https://cloud.r-project.org"))
 }
 
+# Garante biblioteca de usuário gravável no Windows (evita erro em Program Files)
+user_lib <- Sys.getenv("R_LIBS_USER")
+if (nzchar(user_lib)) {
+  if (!dir.exists(user_lib)) dir.create(user_lib, recursive = TRUE, showWarnings = FALSE)
+  .libPaths(c(user_lib, .libPaths()))
+}
+
 pacotes_necessarios <- c(
   "tidyverse",   # Manipulação de dados (dplyr, tidyr, ggplot2, stringr, readr)
   "arrow",       # Processamento colunar ultra-rápido de Parquet e Streaming

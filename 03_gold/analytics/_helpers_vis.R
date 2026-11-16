@@ -15,7 +15,13 @@ salvar_e_exibir_plotly <- function(grafico_ggplot, nome_arquivo_html, tooltip = 
   destino <- file.path(pasta_out, nome_arquivo_html)
 
   if (requireNamespace("htmlwidgets", quietly = TRUE)) {
-    htmlwidgets::saveWidget(p, file = normalizePath(destino, mustWork = FALSE), selfcontained = TRUE)
+    usar_self <- requireNamespace("rmarkdown", quietly = TRUE) && rmarkdown::pandoc_available()
+    htmlwidgets::saveWidget(
+      p,
+      file = normalizePath(destino, mustWork = FALSE),
+      selfcontained = usar_self,
+      libdir = "lib"
+    )
     message("💾 Gráfico interativo exportado em: ", destino)
   } else {
     message("ℹ️ Instale 'htmlwidgets' para exportar automaticamente para HTML.")

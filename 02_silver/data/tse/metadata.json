@@ -1,0 +1,290 @@
+{
+  "02_silver/data/tse/bens_candidatos_clean.parquet": {
+    "base": "bens_candidatos_clean.parquet",
+    "camada": "silver_tse_parquet",
+    "linhas": 100971,
+    "colunas": 3,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "total_patrimonio_declarado",
+        "tipo": "double"
+      },
+      {
+        "coluna": "qtd_bens_declarados",
+        "tipo": "int32"
+      }
+    ]
+  },
+  "02_silver/data/tse/candidatos_clean.parquet": {
+    "base": "candidatos_clean.parquet",
+    "camada": "silver_tse_parquet",
+    "linhas": 151868,
+    "colunas": 26,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_urna_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_cargo",
+        "tipo": "int16"
+      },
+      {
+        "coluna": "ds_cargo",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_partido",
+        "tipo": "int16"
+      },
+      {
+        "coluna": "sg_partido",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_partido",
+        "tipo": "string"
+      },
+      {
+        "coluna": "tp_agremiacao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_federacao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_genero",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cor_raca",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_grau_instrucao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_estado_civil",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_ocupacao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "dt_nascimento",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "nr_turno",
+        "tipo": "int8"
+      },
+      {
+        "coluna": "dt_eleicao",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "ds_sit_tot_turno",
+        "tipo": "string"
+      },
+      {
+        "coluna": "idade_2024",
+        "tipo": "int16"
+      },
+      {
+        "coluna": "is_eleito",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "status_eleicao",
+        "tipo": "string"
+      }
+    ]
+  },
+  "02_silver/data/tse/despesas_clean.parquet": {
+    "base": "despesas_clean.parquet",
+    "camada": "silver_tse_parquet",
+    "linhas": 1276510,
+    "colunas": 10,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "dt_despesa",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "ds_origem_despesa",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_despesa",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_tipo_documento",
+        "tipo": "string"
+      },
+      {
+        "coluna": "vr_despesa_contratada",
+        "tipo": "double"
+      },
+      {
+        "coluna": "nr_cpf_cnpj_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_fornecedor",
+        "tipo": "string"
+      }
+    ]
+  },
+  "02_silver/data/tse/receitas_clean.parquet": {
+    "base": "receitas_clean.parquet",
+    "camada": "silver_tse_parquet",
+    "linhas": 713921,
+    "colunas": 12,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "dt_receita",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "ds_fonte_receita",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_origem_receita",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_natureza_receita",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_especie_receita",
+        "tipo": "string"
+      },
+      {
+        "coluna": "vr_receita",
+        "tipo": "double"
+      },
+      {
+        "coluna": "nr_cpf_cnpj_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "is_fundo_publico",
+        "tipo": "bool"
+      }
+    ]
+  },
+  "02_silver/data/tse/votacao_munzona_clean.parquet": {
+    "base": "votacao_munzona_clean.parquet",
+    "camada": "silver_tse_parquet",
+    "linhas": 254878,
+    "colunas": 11,
+    "schema": [
+      {
+        "coluna": "nr_turno",
+        "tipo": "int8"
+      },
+      {
+        "coluna": "dt_eleicao",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_zona",
+        "tipo": "int16"
+      },
+      {
+        "coluna": "cd_cargo",
+        "tipo": "int16"
+      },
+      {
+        "coluna": "ds_cargo",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "qt_votos_nominais",
+        "tipo": "int32"
+      }
+    ]
+  }
+}
