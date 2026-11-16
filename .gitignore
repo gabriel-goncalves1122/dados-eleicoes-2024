@@ -1,5 +1,5 @@
 # ==============================================================================
-# GITIGNORE - PROJETO ELEICOES / R
+# GITIGNORE - PROJETO ELEIÇÕES 2024 / R (100% PARQUET MEDALLION)
 # ==============================================================================
 
 # Arquivos temporários e de sessão do R / RStudio
@@ -8,15 +8,13 @@
 .Rhistory
 **/.Rhistory
 **/.Rproj.user/
-tst.parquet
 
-# Camada 01_raw (Bronze) - Dados brutos e zips originais (~3.3 GB)
-tse/data/01_raw/
-
-# Camada 02_silver (Silver) - Dados tratados volumosos (>100MB por arquivo)
-tse/data/02_silver/csv/*.csv
-tse/data/02_silver/parquet/*.parquet
+# Dados binários em Parquet nas camadas Bronze, Silver e Gold
+01_bronze/data/
+02_silver/data/**/*.parquet
+03_gold/data/**/*.parquet
 
 # Preservar dicionários de dados e metadados gerados pelo catálogo
-!tse/data/**/README.md
-!tse/data/**/metadata.json
+!**/data/**/README.md
+!**/data/**/metadata.json
+!**/data/**/.gitkeep

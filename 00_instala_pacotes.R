@@ -1,25 +1,32 @@
 # ==============================================================================
-# SCRIPT 00: INSTALAÇÃO DE DEPENDÊNCIAS DO PROJETO
+# SCRIPT 00: INSTALAÇÃO DE DEPENDÊNCIAS DO PROJETO (ELEIÇÕES 2024 - MG & SP)
 # ==============================================================================
-# Rode este script apenas uma vez na sua máquina para preparar o ambiente.
+# Este script prepara o ambiente instalando pacotes necessários.
 
-# Força o uso do repositório da Posit para Linux (Ubuntu), garantindo 
-# a instalação de versões pré-compiladas (binários) e evitando falhas.
-options(repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/noble/latest"))
+if (is.null(getOption("repos")) || getOption("repos")["CRAN"] == "@CRAN@") {
+  options(repos = c(CRAN = "https://cloud.r-project.org"))
+}
 
 pacotes_necessarios <- c(
-  "tidyverse",   # Manipulação de dados (dplyr, tidyr, ggplot2)
-  "electionsBR", # Conexão com repositório do TSE
-  "sidrar",      # Conexão com API do IBGE
-  "arrow",       # Leitura e escrita ultra-rápida de Parquet
-  "fs",          # Manipulação de diretórios
-  "reactable",   # Tabelas interativas html
-  "plotly",      # Gráficos interativos html
-  "here"         # Para navegar nas pastas facilmente
+  "tidyverse",   # Manipulação de dados (dplyr, tidyr, ggplot2, stringr, readr)
+  "arrow",       # Processamento colunar ultra-rápido de Parquet e Streaming
+  "fs",          # Manipulação consistente de diretórios e arquivos
+  "here",        # Resolução automática da raiz do projeto (cross-platform)
+  "curl",        # Downloads resilientes com suporte a timeout e retry
+  "httr2",       # Requisições HTTP modernas
+  "sidrar",      # Conexão com a API SIDRA do IBGE (Censo e PIB)
+  "reactable",   # Tabelas interativas HTML
+  "plotly",      # Gráficos analíticos interativos HTML
+  "jsonlite",    # Manipulação de metadados JSON
+  "duckdb"       # Engine analítica SQL de alta performance em memória/disco
 )
 
-# Instala apenas os que não estão instalados
-pacotes_faltantes <- pacotes_necessarios[!(pacotes_necessarios %in% installed.packages()[,"Package"])]
-if(length(pacotes_faltantes)) install.packages(pacotes_faltantes)
+pacotes_faltantes <- pacotes_necessarios[!(pacotes_necessarios %in% installed.packages()[, "Package"])]
+if (length(pacotes_faltantes) > 0) {
+  message("Instalando pacotes faltantes: ", paste(pacotes_faltantes, collapse = ", "))
+  install.packages(pacotes_faltantes)
+} else {
+  message("✅ Todos os pacotes necessários já estão instalados.")
+}
 
-message("✅ Ambiente pronto! Todos os pacotes instalados.")
+message("✅ Ambiente pronto para o processamento das Eleições 2024!")
