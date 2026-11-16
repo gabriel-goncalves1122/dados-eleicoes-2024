@@ -17,6 +17,8 @@ pacotes_necessarios <- c(
   "sidrar",      # Conexão com a API SIDRA do IBGE (Censo e PIB)
   "reactable",   # Tabelas interativas HTML
   "plotly",      # Gráficos analíticos interativos HTML
+  "htmlwidgets", # Exportação de gráficos interativos para HTML
+  "scales",      # Formatação monetária e percentual nos gráficos
   "jsonlite",    # Manipulação de metadados JSON
   "duckdb"       # Engine analítica SQL de alta performance em memória/disco
 )

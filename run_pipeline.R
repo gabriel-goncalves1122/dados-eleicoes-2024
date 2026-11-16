@@ -65,6 +65,7 @@ executar_pipeline <- function(etapa = "tudo") {
     executar_script_com_timer("03_gold/scripts/01_cria_datamart_candidatos.R", "Datamart Candidatos 2024")
     executar_script_com_timer("03_gold/scripts/02_cria_datamart_municipal.R", "Datamart Municipal 2024")
     executar_script_com_timer("03_gold/scripts/03_join_bases_integracao.R", "Datamart Integrado TSE + IBGE")
+    executar_script_com_timer("03_gold/scripts/04_cria_datamart_despesas.R", "Datamart Despesas 2024")
   }
 
   if (etapa %in% c("tudo", "all", "catalog", "docs")) {

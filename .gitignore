@@ -14,6 +14,9 @@
 02_silver/data/**/*.parquet
 03_gold/data/**/*.parquet
 
+# Saídas HTML geradas pelos scripts analíticos
+03_gold/analytics/output/
+
 # Preservar dicionários de dados e metadados gerados pelo catálogo
 !**/data/**/README.md
 !**/data/**/metadata.json

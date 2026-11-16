@@ -104,6 +104,10 @@ raca <- read_parquet("01_bronze/data/ibge/censo2022_cor_raca.parquet") %>%
   group_by(cd_municipio_ibge) %>%
   summarise(
     tot = sum(pop[cor_raca == "Total"], na.rm = TRUE),
+    pct_branca_censo = if_else(tot > 0, sum(pop[cor_raca == "Branca"], na.rm = TRUE) / tot * 100, NA_real_),
+    pct_preta_censo = if_else(tot > 0, sum(pop[cor_raca == "Preta"], na.rm = TRUE) / tot * 100, NA_real_),
+    pct_parda_censo = if_else(tot > 0, sum(pop[cor_raca == "Parda"], na.rm = TRUE) / tot * 100, NA_real_),
+    pct_indigena_censo = if_else(tot > 0, sum(pop[cor_raca == "Indígena"], na.rm = TRUE) / tot * 100, NA_real_),
     pct_negros_indigenas_censo = if_else(
       tot > 0,
       sum(pop[cor_raca %in% c("Preta", "Parda", "Indígena")], na.rm = TRUE) / tot * 100,
