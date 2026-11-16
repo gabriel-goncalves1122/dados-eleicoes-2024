@@ -19,12 +19,19 @@ desigualdade_df <- datamart %>%
 g2 <- ggplot(desigualdade_df, aes(
   x = ds_cor_raca, y = total_fundo_publico, fill = ds_genero
 )) +
-  geom_boxplot(alpha = 0.75, outlier.alpha = 0.2) +
+  geom_violin(
+    position = position_dodge(width = 0.8),
+    alpha = 0.78, trim = FALSE, color = "#334155", linewidth = 0.35
+  ) +
+  geom_boxplot(
+    position = position_dodge(width = 0.8),
+    width = 0.14, alpha = 0.9, outlier.shape = NA, color = "#0f172a", linewidth = 0.4
+  ) +
   scale_y_log10(labels = dollar_format(prefix = "R$ ")) +
-  scale_fill_manual(values = c("MASCULINO" = "#1e3a8a", "FEMININO" = "#e11d48")) +
+  scale_fill_manual(values = c("MASCULINO" = "#0284c7", "FEMININO" = "#db2777")) +
   labs(
     title = "Distribuição do Fundo Público por Cor/Raça e Gênero (2024 - MG & SP)",
-    subtitle = "Candidatos que receberam recursos públicos (Escala Logarítmica)",
+    subtitle = "Densidade (Violin Plot) e mediana dos recursos públicos recebidos (Escala Logarítmica)",
     x = "Cor / Raça Declarada",
     y = "Total de Fundo Público Recebido (R$)",
     fill = "Gênero"
