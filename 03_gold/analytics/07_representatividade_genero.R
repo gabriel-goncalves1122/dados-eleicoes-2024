@@ -1,8 +1,8 @@
 # ==============================================================================
-# ANALYTICS 07: REPRESENTATIVIDADE DE GÊNERO (CENSO 2022 vs. ELEIÇÕES 2024)
+# ANALYTICS 07: FUNIL DE REPRESENTATIVIDADE FEMININA (CENSO vs. URNAS 2024)
 # ==============================================================================
-# Responde: A proporção de mulheres candidatas e eleitas acompanha o peso real
-# das mulheres na população dos 1.498 municípios de MG e SP?
+# Visualização direta: compara a presença feminina em 4 estágios (População Censo,
+# Candidatas, Vereadoras Eleitas e Prefeitas Eleitas) em MG e SP.
 
 if (file.exists("utils_paths.R")) {
   source("utils_paths.R")
@@ -11,32 +11,53 @@ if (file.exists("utils_paths.R")) {
 }
 source("03_gold/analytics/_helpers_vis.R")
 
-df_mun <- read_parquet("03_gold/data/datamart_eleitoral_socioeconomico_2024.parquet") %>%
-  filter(!is.na(pct_mulheres_censo), !is.na(pct_eleitos_mulheres))
+cand <- read_parquet("03_gold/data/datamart_candidatos_2024.parquet")
+mun  <- read_parquet("03_gold/data/datamart_eleitoral_socioeconomico_2024.parquet")
 
-g7 <- ggplot(df_mun, aes(
-  x = pct_mulheres_censo, y = pct_eleitos_mulheres,
-  color = sg_uf, size = populacao_2022,
-  text = paste(
-    "Município:", nm_municipio, "-", sg_uf,
-    "<br>População (2022):", format(populacao_2022, big.mark = "."),
-    "<br>% Mulheres (Censo):", round(pct_mulheres_censo, 1), "%",
-    "<br>% Candidatas (2024):", round(pct_cand_mulheres, 1), "%",
-    "<br>% Eleitas (2024):", round(pct_eleitos_mulheres, 1), "%",
-    "<br>Gap (Eleitas - Censo):", round(gap_eleitos_mulheres, 1), "pp"
-  )
+censo_uf <- mun %>%
+  group_by(sg_uf) %>%
+  summarise(pct = weighted.mean(pct_mulheres_censo, populacao_2022, na.rm = TRUE), .groups = "drop") %>%
+  mutate(estagio = "1. População (Censo 2022)")
+
+cand_uf <- cand %>%
+  filter(!is.na(ds_genero)) %>%
+  group_by(sg_uf) %>%
+  summarise(pct = mean(ds_genero == "FEMININO") * 100, .groups = "drop") %>%
+  mutate(estagio = "2. Candidatas (Cota 30%)")
+
+ver_uf <- cand %>%
+  filter(cd_cargo == 13L, is_eleito, !is.na(ds_genero)) %>%
+  group_by(sg_uf) %>%
+  summarise(pct = mean(ds_genero == "FEMININO") * 100, .groups = "drop") %>%
+  mutate(estagio = "3. Vereadoras Eleitas")
+
+pref_uf <- cand %>%
+  filter(cd_cargo == 11L, is_eleito, !is.na(ds_genero)) %>%
+  group_by(sg_uf) %>%
+  summarise(pct = mean(ds_genero == "FEMININO") * 100, .groups = "drop") %>%
+  mutate(estagio = "4. Prefeitas Eleitas")
+
+funil_genero <- bind_rows(censo_uf, cand_uf, ver_uf, pref_uf) %>%
+  mutate(estagio = factor(estagio, levels = c(
+    "1. População (Censo 2022)", "2. Candidatas (Cota 30%)",
+    "3. Vereadoras Eleitas", "4. Prefeitas Eleitas"
+  )))
+
+g7 <- ggplot(funil_genero, aes(
+  x = estagio, y = pct, fill = sg_uf,
+  text = paste("Estado:", sg_uf, "<br>Estágio:", estagio, "<br>Mulheres:", round(pct, 1), "%")
 )) +
-  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "#334155") +
+  geom_col(position = position_dodge(width = 0.72), width = 0.65) +
+  geom_hline(yintercept = 50, linetype = "dashed", color = "#0f172a") +
   geom_hline(yintercept = 30, linetype = "dotted", color = "#e11d48") +
-  geom_point(alpha = 0.55) +
-  scale_color_manual(values = c("MG" = "#2563eb", "SP" = "#f59e0b")) +
+  scale_y_continuous(limits = c(0, 60), labels = function(x) paste0(x, "%")) +
+  scale_fill_manual(values = c("MG" = "#2563eb", "SP" = "#f59e0b")) +
   labs(
-    title = "Representatividade Feminina: % Mulheres no Censo 2022 vs. % Eleitas em 2024",
-    subtitle = "Linha tracejada = paridade demográfica (y = x) | Linha pontilhada = cota mínima de 30% de candidaturas",
-    x = "% de Mulheres na População (Censo 2022)",
-    y = "% de Mulheres Eleitas (Prefeitas + Vereadoras)",
-    color = "Estado (UF)", size = "População 2022"
+    title = "Funil da Representatividade Feminina: Da População às Eleitas (2024)",
+    subtitle = "Linha tracejada = paridade (50%) | Pontilhada = cota mínima de candidaturas (30%)",
+    x = NULL, y = "Proporção de Mulheres (%)", fill = "Estado (UF)"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "bottom")
 
 salvar_e_exibir_plotly(g7, "07_representatividade_genero_censo_urnas.html")

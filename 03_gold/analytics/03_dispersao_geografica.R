@@ -1,5 +1,5 @@
 # ==============================================================================
-# ANALYTICS 03: PATRIMÔNIO DECLARADO VS. VOTOS OBTIDOS (2024 - MG & SP)
+# ANALYTICS 03: TOP 50 MAIORES PATRIMÔNIOS VS. VOTOS PARA PREFEITO (2024)
 # ==============================================================================
 
 if (file.exists("utils_paths.R")) {
@@ -11,31 +11,33 @@ source("03_gold/analytics/_helpers_vis.R")
 
 datamart <- read_parquet("03_gold/data/datamart_candidatos_2024.parquet")
 
-patrimonio_df <- datamart %>%
-  filter(total_patrimonio_declarado > 1000, total_votos > 10, cd_cargo == 11L) %>%
+top50_patrimonio <- datamart %>%
+  filter(cd_cargo == 11L, total_patrimonio_declarado > 0, total_votos > 0) %>%
+  slice_max(total_patrimonio_declarado, n = 50, with_ties = FALSE) %>%
   mutate(resultado = ifelse(is_eleito, "Eleito", "Não Eleito"))
 
-g3 <- ggplot(patrimonio_df, aes(
-  x = total_patrimonio_declarado, y = total_votos, color = resultado,
+g3 <- ggplot(top50_patrimonio, aes(
+  x = total_patrimonio_declarado / 1e6, y = total_votos, color = resultado,
   text = paste(
-    "Candidato:", nm_urna_candidato,
+    "Candidato:", nm_urna_candidato, " (", sg_partido, ")",
     "<br>Município:", nm_municipio, "-", sg_uf,
-    "<br>Partido:", sg_partido,
-    "<br>Patrimônio: R$", format(round(total_patrimonio_declarado, 0), big.mark = "."),
+    "<br>Patrimônio: R$", round(total_patrimonio_declarado / 1e6, 2), "Mi",
     "<br>Votos:", format(total_votos, big.mark = "."),
-    "<br>Resultado:", status_eleicao
+    "<br>Resultado:", resultado
   )
 )) +
-  geom_point(alpha = 0.65, size = 2) +
-  scale_x_log10(labels = dollar_format(prefix = "R$ ")) +
+  geom_point(alpha = 0.88, size = 4) +
+  scale_x_log10(labels = function(x) paste0("R$ ", x, " Mi")) +
   scale_y_log10(labels = label_number(big.mark = ".")) +
-  scale_color_manual(values = c("Eleito" = "#10b981", "Não Eleito" = "#64748b")) +
+  scale_color_manual(values = c("Eleito" = "#2563eb", "Não Eleito" = "#f97316")) +
   labs(
-    title = "Patrimônio Declarado vs. Votação para Prefeito (2024 - MG & SP)",
-    x = "Patrimônio Declarado (R$ - Escala Log)",
-    y = "Total de Votos (Escala Log)",
-    color = "Situação"
+    title = "Top 50 Candidatos a Prefeito mais Ricos: Patrimônio vs. Votos (2024)",
+    subtitle = "Comparativo entre Eleitos (Azul) e Não Eleitos (Laranja) em MG e SP",
+    x = "Patrimônio Declarado (Milhões R$ - Escala Log)",
+    y = "Votos Obtidos (Escala Log)",
+    color = "Resultado"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "bottom")
 
 salvar_e_exibir_plotly(g3, "03_patrimonio_vs_votos.html")

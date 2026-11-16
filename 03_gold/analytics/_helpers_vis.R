@@ -7,8 +7,12 @@ library(arrow)
 library(plotly)
 library(scales)
 
-salvar_e_exibir_plotly <- function(grafico_ggplot, nome_arquivo_html, tooltip = "text") {
-  p <- ggplotly(grafico_ggplot, tooltip = tooltip)
+salvar_e_exibir_plotly <- function(grafico, nome_arquivo_html, tooltip = "text") {
+  if (inherits(grafico, "plotly")) {
+    p <- grafico
+  } else {
+    p <- ggplotly(grafico, tooltip = tooltip)
+  }
 
   pasta_out <- "03_gold/analytics/output"
   if (!dir.exists(pasta_out)) dir.create(pasta_out, recursive = TRUE)
@@ -23,8 +27,6 @@ salvar_e_exibir_plotly <- function(grafico_ggplot, nome_arquivo_html, tooltip = 
       libdir = "lib"
     )
     message("💾 Gráfico interativo exportado em: ", destino)
-  } else {
-    message("ℹ️ Instale 'htmlwidgets' para exportar automaticamente para HTML.")
   }
 
   print(p)

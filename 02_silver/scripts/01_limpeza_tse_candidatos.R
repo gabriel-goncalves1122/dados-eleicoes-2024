@@ -70,7 +70,7 @@ candidatos_clean <- open_dataset("01_bronze/data/tse/candidatos.parquet") %>%
     dt_eleicao = as.Date(dt_eleicao, format = "%d/%m/%Y"),
     idade_2024 = as.integer(2024L - as.integer(format(dt_nascimento, "%Y"))),
     ds_sit_tot_turno = limpar_sentinela(ds_sit_tot_turno),
-    is_eleito = str_detect(coalesce(ds_sit_tot_turno, ""), "ELEITO|MÉDIA|QUOCIENTE"),
+    is_eleito = str_detect(coalesce(ds_sit_tot_turno, ""), "^ELEITO"),
     status_eleicao = case_when(
       is_eleito ~ "Eleito",
       str_detect(coalesce(ds_sit_tot_turno, ""), "2º TURNO") ~ "2º Turno",
