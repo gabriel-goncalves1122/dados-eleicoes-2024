@@ -1,23 +1,20 @@
-# ==============================================================================
-# GITIGNORE - PROJETO ELEIÇÕES 2024 / R (100% PARQUET MEDALLION)
-# ==============================================================================
+# Dados brutos e processados (Arquivos Parquet pesados)
+dados/**/*.parquet
+dados/bronze/
+dados/prata/
+dados/ouro/
+*.zip
+*.csv
+*.rds
 
-# Arquivos temporários e de sessão do R / RStudio
-.RData
-.RDataTmp
+# Saídas locais de gráficos e relatórios
+analises/eleicoes/output/
+analises/painel/output/
+analises/pca/graficos/
+Rplots.pdf
+
+# Temporários do RStudio / R
+.Rproj.user/
 .Rhistory
-**/.Rhistory
-**/.Rproj.user/
-
-# Dados binários em Parquet nas camadas Bronze, Silver e Gold
-01_bronze/data/
-02_silver/data/**/*.parquet
-03_gold/data/**/*.parquet
-
-# Saídas HTML geradas pelos scripts analíticos
-03_gold/analytics/output/
-
-# Preservar dicionários de dados e metadados gerados pelo catálogo
-!**/data/**/README.md
-!**/data/**/metadata.json
-!**/data/**/.gitkeep
+.RData
+.Ruserdata

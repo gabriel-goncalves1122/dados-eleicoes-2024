@@ -1,0 +1,181 @@
+{
+  "dados/prata/dim_candidato.parquet": {
+    "base": "dim_candidato.parquet",
+    "caminho": "dados/prata/dim_candidato.parquet",
+    "camada": "prata_dimensoes",
+    "linhas": 463731,
+    "colunas": 25,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_partido",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "cd_cargo",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "ds_cargo",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_urna_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf_nascimento",
+        "tipo": "string"
+      },
+      {
+        "coluna": "is_candidato_local",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "dt_nascimento",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "idade_2024",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "ds_genero",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cor_raca",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_grau_instrucao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_estado_civil",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_ocupacao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "tp_agremiacao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_coligacao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_situacao_candidatura",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_sit_tot_turno",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_turno_final",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "disputou_segundo_turno",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "is_eleito",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "status_eleicao",
+        "tipo": "string"
+      }
+    ]
+  },
+  "dados/prata/dim_municipio.parquet": {
+    "base": "dim_municipio.parquet",
+    "caminho": "dados/prata/dim_municipio.parquet",
+    "camada": "prata_dimensoes",
+    "linhas": 5571,
+    "colunas": 8,
+    "schema": [
+      {
+        "coluna": "cd_municipio_ibge",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "regiao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "porte_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "is_capital",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "tem_eleicao_municipal",
+        "tipo": "bool"
+      }
+    ]
+  },
+  "dados/prata/dim_partido.parquet": {
+    "base": "dim_partido.parquet",
+    "caminho": "dados/prata/dim_partido.parquet",
+    "camada": "prata_dimensoes",
+    "linhas": 29,
+    "colunas": 5,
+    "schema": [
+      {
+        "coluna": "nr_partido",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "sg_partido",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_partido",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_federacao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_federacao",
+        "tipo": "string"
+      }
+    ]
+  }
+}

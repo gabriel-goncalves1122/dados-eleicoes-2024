@@ -1,0 +1,586 @@
+{
+  "dados/ouro/ouro_centralizacao_partidaria.parquet": {
+    "base": "ouro_centralizacao_partidaria.parquet",
+    "caminho": "dados/ouro/ouro_centralizacao_partidaria.parquet",
+    "camada": "ouro_datamarts",
+    "linhas": 425,
+    "colunas": 16,
+    "schema": [
+      {
+        "coluna": "nr_partido",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "sg_partido",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_federacao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "regiao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cargo",
+        "tipo": "string"
+      },
+      {
+        "coluna": "qtd_candidatos",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "qtd_eleitos",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "taxa_eleicao",
+        "tipo": "double"
+      },
+      {
+        "coluna": "total_arrecadado",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_dir_nacional",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_dir_estadual",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_dir_municipal",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_outras_fontes",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_centralizacao_nacional",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_dinheiro_fora_uf",
+        "tipo": "double"
+      },
+      {
+        "coluna": "custo_por_eleito",
+        "tipo": "double"
+      }
+    ]
+  },
+  "dados/ouro/ouro_concentracao_zonas.parquet": {
+    "base": "ouro_concentracao_zonas.parquet",
+    "caminho": "dados/ouro/ouro_concentracao_zonas.parquet",
+    "camada": "ouro_datamarts",
+    "linhas": 62138,
+    "colunas": 14,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "regiao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "qtd_zonas_municipio",
+        "tipo": "int64"
+      },
+      {
+        "coluna": "sg_partido",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cargo",
+        "tipo": "string"
+      },
+      {
+        "coluna": "is_eleito",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "total_votos_1t",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "qtd_zonas_com_voto",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "hhi_voto_zonas",
+        "tipo": "double"
+      },
+      {
+        "coluna": "total_gasto",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_gasto_digital",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_gasto_militancia",
+        "tipo": "double"
+      }
+    ]
+  },
+  "dados/ouro/ouro_eficiencia_anomalias_candidatos.parquet": {
+    "base": "ouro_eficiencia_anomalias_candidatos.parquet",
+    "caminho": "dados/ouro/ouro_eficiencia_anomalias_candidatos.parquet",
+    "camada": "ouro_datamarts",
+    "linhas": 463731,
+    "colunas": 20,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "regiao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "porte_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_partido",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cargo",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_genero",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cor_raca",
+        "tipo": "string"
+      },
+      {
+        "coluna": "idade_2024",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "is_candidato_local",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "disputou_segundo_turno",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "is_eleito",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "total_votos",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "votos_anulados_subjudice",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "total_arrecadado",
+        "tipo": "double"
+      },
+      {
+        "coluna": "total_fundo_publico",
+        "tipo": "double"
+      },
+      {
+        "coluna": "total_gasto",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_receita_de_outros_candidatos",
+        "tipo": "double"
+      },
+      {
+        "coluna": "custo_por_voto",
+        "tipo": "double"
+      },
+      {
+        "coluna": "flag_anomalia_voto_recurso",
+        "tipo": "bool"
+      }
+    ]
+  },
+  "dados/ouro/ouro_estrutura_gastos_campanha.parquet": {
+    "base": "ouro_estrutura_gastos_campanha.parquet",
+    "caminho": "dados/ouro/ouro_estrutura_gastos_campanha.parquet",
+    "camada": "ouro_datamarts",
+    "linhas": 34570,
+    "colunas": 10,
+    "schema": [
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "regiao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "porte_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cargo",
+        "tipo": "string"
+      },
+      {
+        "coluna": "is_eleito",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "st_turno",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "semana_eleicao",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "macro_categoria_despesa",
+        "tipo": "string"
+      },
+      {
+        "coluna": "qtd_lancamentos",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "total_despesa",
+        "tipo": "double"
+      }
+    ]
+  },
+  "dados/ouro/ouro_fornecedores_rede.parquet": {
+    "base": "ouro_fornecedores_rede.parquet",
+    "caminho": "dados/ouro/ouro_fornecedores_rede.parquet",
+    "camada": "ouro_datamarts",
+    "linhas": 113379,
+    "colunas": 12,
+    "schema": [
+      {
+        "coluna": "nr_cpf_cnpj_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cnae_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "macro_categoria_principal",
+        "tipo": "string"
+      },
+      {
+        "coluna": "qtd_lancamentos",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "qtd_candidatos",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "qtd_municipios",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "qtd_ufs",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "qtd_partidos",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "valor_total_contratado",
+        "tipo": "double"
+      },
+      {
+        "coluna": "ticket_medio",
+        "tipo": "double"
+      },
+      {
+        "coluna": "flag_rede_multi_municipio",
+        "tipo": "bool"
+      }
+    ]
+  },
+  "dados/ouro/ouro_patrimonio_composicao.parquet": {
+    "base": "ouro_patrimonio_composicao.parquet",
+    "caminho": "dados/ouro/ouro_patrimonio_composicao.parquet",
+    "camada": "ouro_datamarts",
+    "linhas": 463731,
+    "colunas": 18,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "regiao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "porte_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_partido",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cargo",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_genero",
+        "tipo": "string"
+      },
+      {
+        "coluna": "is_eleito",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "qtd_bens",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "patrimonio_total",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_imoveis_urbanos",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_terra_rural",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_empresas_acoes",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_veiculos",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_dinheiro_especie",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vl_outros_aplicacoes",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_dinheiro_especie",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_terra_rural",
+        "tipo": "double"
+      }
+    ]
+  },
+  "dados/ouro/ouro_pca_municipios.parquet": {
+    "base": "ouro_pca_municipios.parquet",
+    "caminho": "dados/ouro/ouro_pca_municipios.parquet",
+    "camada": "ouro_datamarts",
+    "linhas": 5569,
+    "colunas": 20,
+    "schema": [
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_ibge",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "regiao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "porte_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "is_capital",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "prefeito_eleito_genero",
+        "tipo": "string"
+      },
+      {
+        "coluna": "prefeito_eleito_instrucao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "pib_per_capita_reais",
+        "tipo": "double"
+      },
+      {
+        "coluna": "taxa_alfabetizacao_15mais",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_populacao_urbana",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_esgoto_adequado",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_adm_publica_vab_2021",
+        "tipo": "double"
+      },
+      {
+        "coluna": "taxa_comparecimento_estimada",
+        "tipo": "double"
+      },
+      {
+        "coluna": "gasto_campanha_per_capita",
+        "tipo": "double"
+      },
+      {
+        "coluna": "custo_medio_voto_municipio",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_fundo_publico_municipio",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_cand_mulheres",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_eleitos_mulheres",
+        "tipo": "double"
+      }
+    ]
+  },
+  "dados/ouro/ouro_representatividade_municipal.parquet": {
+    "base": "ouro_representatividade_municipal.parquet",
+    "caminho": "dados/ouro/ouro_representatividade_municipal.parquet",
+    "camada": "ouro_datamarts",
+    "linhas": 5569,
+    "colunas": 18,
+    "schema": [
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_ibge",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf",
+        "tipo": "string"
+      },
+      {
+        "coluna": "regiao",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "porte_municipio",
+        "tipo": "string"
+      },
+      {
+        "coluna": "is_capital",
+        "tipo": "bool"
+      },
+      {
+        "coluna": "pct_mulheres_censo",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_negros_indigenas_censo",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_cand_mulheres",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_fundo_publico_mulheres",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_eleitos_mulheres",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_cand_negros_indigenas",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_fundo_publico_negros_indigenas",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_eleitos_negros_indigenas",
+        "tipo": "double"
+      },
+      {
+        "coluna": "gap_eleitos_mulheres",
+        "tipo": "double"
+      },
+      {
+        "coluna": "gap_eleitos_negros_indigenas",
+        "tipo": "double"
+      },
+      {
+        "coluna": "gap_financiamento_mulheres",
+        "tipo": "double"
+      }
+    ]
+  }
+}

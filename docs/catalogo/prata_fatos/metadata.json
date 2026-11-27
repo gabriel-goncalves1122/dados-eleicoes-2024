@@ -1,0 +1,311 @@
+{
+  "dados/prata/fato_bens.parquet": {
+    "base": "fato_bens.parquet",
+    "caminho": "dados/prata/fato_bens.parquet",
+    "camada": "prata_fatos",
+    "linhas": 911354,
+    "colunas": 5,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_ordem_bem",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "ds_tipo_bem",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_bem_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "vr_bem",
+        "tipo": "double"
+      }
+    ]
+  },
+  "dados/prata/fato_despesas.parquet": {
+    "base": "fato_despesas.parquet",
+    "caminho": "dados/prata/fato_despesas.parquet",
+    "camada": "prata_fatos",
+    "linhas": 4453470,
+    "colunas": 15,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "dt_despesa",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "st_turno",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "vr_despesa_contratada",
+        "tipo": "double"
+      },
+      {
+        "coluna": "ds_origem_despesa",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_despesa",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_tipo_documento",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_cpf_cnpj_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_cnae_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cnae_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_fornecedor",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_esfera_part_fornecedor",
+        "tipo": "string"
+      }
+    ]
+  },
+  "dados/prata/fato_indicadores_municipio.parquet": {
+    "base": "fato_indicadores_municipio.parquet",
+    "caminho": "dados/prata/fato_indicadores_municipio.parquet",
+    "camada": "prata_fatos",
+    "linhas": 5570,
+    "colunas": 19,
+    "schema": [
+      {
+        "coluna": "cd_municipio_ibge",
+        "tipo": "string"
+      },
+      {
+        "coluna": "populacao_2022",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "pib_reais_2023",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vab_adm_publica_reais_2021",
+        "tipo": "double"
+      },
+      {
+        "coluna": "vab_total_reais_2021",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_adm_publica_vab_2021",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_impostos_pib_2021",
+        "tipo": "double"
+      },
+      {
+        "coluna": "taxa_alfabetizacao_15mais",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_populacao_urbana",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_agua_rede_geral",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_esgoto_adequado",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_sem_banheiro",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_branca_censo",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_preta_censo",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_parda_censo",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_indigena_censo",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_negros_indigenas_censo",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pct_mulheres_censo",
+        "tipo": "double"
+      },
+      {
+        "coluna": "pib_per_capita_reais",
+        "tipo": "double"
+      }
+    ]
+  },
+  "dados/prata/fato_receitas.parquet": {
+    "base": "fato_receitas.parquet",
+    "caminho": "dados/prata/fato_receitas.parquet",
+    "camada": "prata_fatos",
+    "linhas": 2041160,
+    "colunas": 18,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "dt_receita",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "st_turno",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "vr_receita",
+        "tipo": "double"
+      },
+      {
+        "coluna": "ds_fonte_receita",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_origem_receita",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_natureza_receita",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_especie_receita",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_cpf_cnpj_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nm_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_cnae_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_cnae_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sg_uf_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "ds_esfera_partidaria_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "sq_candidato_doador",
+        "tipo": "string"
+      },
+      {
+        "coluna": "is_fundo_publico",
+        "tipo": "bool"
+      }
+    ]
+  },
+  "dados/prata/fato_votacao.parquet": {
+    "base": "fato_votacao.parquet",
+    "caminho": "dados/prata/fato_votacao.parquet",
+    "camada": "prata_fatos",
+    "linhas": 717171,
+    "colunas": 9,
+    "schema": [
+      {
+        "coluna": "sq_candidato",
+        "tipo": "string"
+      },
+      {
+        "coluna": "cd_municipio_tse",
+        "tipo": "string"
+      },
+      {
+        "coluna": "nr_turno",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "dt_eleicao",
+        "tipo": "date32[day]"
+      },
+      {
+        "coluna": "nr_zona",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "qt_votos_nominais",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "qt_votos_nominais_validos",
+        "tipo": "int32"
+      },
+      {
+        "coluna": "ds_sit_tot_turno",
+        "tipo": "string"
+      },
+      {
+        "coluna": "st_voto_em_transito",
+        "tipo": "bool"
+      }
+    ]
+  }
+}

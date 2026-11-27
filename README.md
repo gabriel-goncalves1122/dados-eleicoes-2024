@@ -1,45 +1,40 @@
 # Pipeline de Engenharia e Análise de Dados Eleitorais (TSE 2024 + IBGE)
 
-Projeto acadêmico enxuto em **Arquitetura Medalhão 100% Parquet (ZSTD)** para ingestão, higienização colunar com **Apache Arrow**, modelagem analítica e visualização interativa das **Eleições Municipais de 2024 (MG & SP)** integradas ao **Censo 2022 e PIB Setorial do IBGE**.
+Projeto acadêmico em **Arquitetura Medalhão 100% Parquet (ZSTD)** com **Camada Prata em Constelação (DuckDB)** e **Camada Ouro Temática Enxuta (8 datamarts de 10 a 20 colunas)** para análise das **Eleições Municipais de 2024 (Brasil — todos os municípios)** integradas ao **Censo 2022 e PIB Setorial do IBGE**.
 
 ---
 
-## 🏛️ Estrutura do Projeto (Enxuta e 100% Parquet)
+## 🏛️ Estrutura do Projeto
 
 ```text
 .
-├── 00_instala_pacotes.R                   # Instalação de dependências CRAN
-├── utils_paths.R                          # Resolução dinâmica da raiz do projeto
-├── run_pipeline.R                         # Orquestrador central da esteira
+├── 00_instala_pacotes.R                         # Instalação de dependências CRAN
 │
-├── 01_bronze/                             # [Bronze] Ingestão direta para Parquet
-│   ├── scripts/
-│   │   ├── 01_ingestao_tse.R              # Extrai MG & SP do CDN do TSE direto para .parquet
-│   │   ├── 02_ingestao_ibge.R             # Coleta unificada SIDRA (Censo 2022 + PIB Setorial)
-│   │   └── 03_ingestao_depara.R           # Mapeamento TSE (5d) <-> IBGE (7d) em .parquet
-│   └── data/
-│       ├── ibge/                          # 9 tabelas .parquet do IBGE/SIDRA
-│       ├── tse/                           # candidatos, bens, votacao, receitas, despesas (.parquet)
-│       └── depara_tse_ibge.parquet
+├── dados/                                       # Camadas de dados em Parquet único (ZSTD)
+│   ├── bronze/                                  # Dados brutos padronizados (TSE, IBGE, De-Para)
+│   ├── prata/                                   # Constelação: dim_*.parquet e fato_*.parquet
+│   └── ouro/                                    # 8 datamarts temáticos enxutos (ouro_*.parquet)
 │
-├── 02_silver/                             # [Silver] Higienização Colunar
-│   ├── scripts/
-│   │   ├── 01_limpeza_tse_candidatos.R    # Candidatos e Votação Nominal
-│   │   ├── 02_limpeza_tse_financas.R      # Receitas, Despesas Contratadas e Bens
-│   │   └── 03_limpeza_ibge.R              # Consolidação de indicadores IBGE por município
-│   └── data/
-│       ├── ibge/ibge_indicadores.parquet
-│       └── tse/                           # Bases *_clean.parquet
+├── src/                                         # Código-fonte do pipeline ETL
+│   ├── config.R                                 # Caminhos e constantes centralizadas
+│   ├── pipeline.R                               # Orquestrador central da esteira
+│   ├── ingestao/                                # Bronze: ingestao_tse.R, ingestao_ibge.R, ingestao_depara.R
+│   ├── limpeza/                                 # Prata (Constelação DuckDB): limpeza_ibge.R, limpeza_tse_candidatos.R, limpeza_tse_financas.R
+│   └── modelagem/                               # Ouro (Temática DuckDB): ouro_*.R
 │
-└── 03_gold/                               # [Gold] Datamarts, Analytics e Governança
-    ├── scripts/
-    │   ├── 01_cria_datamart_candidatos.R  # Datamart Candidatos 2024
-    │   ├── 02_cria_datamart_municipal.R   # Datamart Municipal 2024
-    │   └── 03_join_bases_integracao.R     # Datamart Integrado TSE 2024 + IBGE
-    ├── data/                              # Datamarts finais .parquet + metadata.json
-    ├── analytics/                         # Gráficos interativos (Plotly & Reactable)
-    └── docs/
-        └── 01_gera_metadados.R            # Gerador automático do Data Catalog Parquet
+├── analises/                                    # Análises estatísticas e visualizações
+│   ├── pca/                                     # Atividade 03: atividade_03_pca.R e gráficos
+│   ├── eda/                                     # Exploração inicial e validação de dados
+│   ├── eleicoes/                                # 10 análises estatísticas nacionais (00_executar_todas_analises.R)
+│   ├── painel/                                  # Painel executivo selecionado (KPIs, pizzas, colunas, séries e rankings)
+│   └── eleicoes_legado/                         # Scripts visuais legados da fase MG & SP
+│
+├── apresentacao/                                # Deck HTML (frontend-slides, palco 1920x1080 + PNGs em assets/)
+│   └── index.html                               # Abrir diretamente no navegador (atalhos: ← → Espaço T E F)
+│
+└── docs/                                        # Documentação e dicionário de dados
+    ├── camadas/                                 # Documentação técnica das camadas
+    └── catalogo/                                # gera_metadados.R + metadados JSON/Markdown
 ```
 
 ---
@@ -50,11 +45,20 @@ Projeto acadêmico enxuto em **Arquitetura Medalhão 100% Parquet (ZSTD)** para 
 # 1. Instalar dependências (primeira vez)
 source("00_instala_pacotes.R")
 
-# 2. Executar toda a esteira ou camadas específicas
-source("run_pipeline.R")
-executar_pipeline("tudo")     # Bronze -> Silver -> Gold -> Catálogo
-executar_pipeline("bronze")   # Apenas ingestão Parquet
-executar_pipeline("silver")   # Apenas limpeza Parquet
-executar_pipeline("gold")     # Apenas Datamarts finais
-executar_pipeline("catalog")  # Apenas dicionário de metadados
+# 2. Executar toda a esteira ou etapas específicas
+source("src/pipeline.R")
+executar_pipeline("tudo")       # Ingestão -> Limpeza -> Modelagem -> Catálogo
+executar_pipeline("ingestao")   # Apenas camada Bronze
+executar_pipeline("limpeza")    # Apenas camada Prata (Constelação)
+executar_pipeline("modelagem")  # Apenas 8 Datamarts Ouro Temáticos
+executar_pipeline("catalogo")   # Apenas dicionário de metadados
+```
+
+Ou via terminal (PowerShell / Bash) na raiz `Gabriel_Goncalves/`:
+
+```bash
+Rscript src/pipeline.R tudo
+Rscript analises/pca/atividade_03_pca.R
+Rscript analises/eleicoes/00_executar_todas_analises.R
+Rscript analises/painel/00_executar_painel.R
 ```
