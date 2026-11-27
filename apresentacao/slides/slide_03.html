@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slide 03 · Stack e Pipeline Medalhão</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .pipe-svg-wrap {
+      background: #ffffff;
+      border: 1.5px solid var(--primary-border);
+      border-radius: 16px;
+      padding: 18px 22px;
+      box-shadow: 0 8px 24px rgba(17, 17, 17, 0.04);
+    }
+    .pipe-svg-wrap svg { width: 100%; height: auto; display: block; }
+  </style>
+</head>
+<body>
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="slide-top">
+        <span class="eyebrow">02 · Stack, Pipeline Medalhão &amp; Compactação</span>
+        <span class="slide-page-num">03 / 10</span>
+      </div>
+      <div class="headline-block reveal">
+        <h2>Stack R + DuckDB + Parquet (ZSTD): Fluxo &amp; Compactação</h2>
+        <p class="subtitle">Processamento colunar em R com DuckDB e Parquet (ZSTD) do dado bruto até os datamarts finais.</p>
+      </div>
+      <div class="content-area">
+        <div class="pipe-svg-wrap reveal">
+          <svg viewBox="0 0 1680 560" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="pipeArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#1e2bfa"/>
+              </marker>
+            </defs>
+
+            <!-- Setas conectoras entre geometrias -->
+            <path d="M 358 195 L 430 195" stroke="#1e2bfa" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#pipeArrow)"/>
+            <path d="M 800 195 L 872 195" stroke="#1e2bfa" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#pipeArrow)"/>
+            <path d="M 1242 195 L 1314 195" stroke="#059669" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#pipeArrow)"/>
+
+            <!-- ==========================================
+                 1. BRONZE: CILINDRO / DATA LAKE LANDING
+                 ========================================== -->
+            <g transform="translate(26, 26)">
+              <rect x="0" y="24" width="330" height="328" rx="18" fill="#f7f8ff" stroke="#1e2bfa" stroke-opacity="0.35" stroke-width="2"/>
+              <ellipse cx="165" cy="24" rx="165" ry="22" fill="#e6ebff" stroke="#1e2bfa" stroke-opacity="0.45" stroke-width="2"/>
+              <!-- Ícone Banco/Download -->
+              <circle cx="52" cy="84" r="24" fill="#1e2bfa"/>
+              <path d="M 52 72 V 92 M 44 85 L 52 93 L 60 85" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="90" y="79" fill="#1e2bfa" font-family="Space Grotesk" font-size="14" font-weight="700">1 · INGESTÃO</text>
+              <text x="90" y="103" fill="#111" font-family="Space Grotesk" font-size="25" font-weight="700">Camada Bronze</text>
+
+              <text x="28" y="156" fill="#1e2bfa" font-family="Space Grotesk" font-size="40" font-weight="700">361,95 MB</text>
+              <text x="28" y="186" fill="#555963" font-family="DM Sans" font-size="17">15 Parquets brutos (ZSTD)</text>
+
+              <line x1="28" y1="208" x2="302" y2="208" stroke="#1e2bfa" stroke-opacity="0.16"/>
+              <text x="28" y="238" fill="#111" font-family="DM Sans" font-size="17">• TSE CDN + API IBGE SIDRA</text>
+              <text x="28" y="268" fill="#111" font-family="DM Sans" font-size="17">• Leitura fiel: all_varchar=true</text>
+              <text x="28" y="298" fill="#111" font-family="DM Sans" font-size="17">• Encoding latin-1 preservado</text>
+              <text x="28" y="328" fill="#555963" font-family="DM Sans" font-size="16">8,58 milhões de registros brutos</text>
+            </g>
+
+            <!-- ==========================================
+                 2. PRATA: TRAPÉZIO/FUNIL DE LIMPEZA & TIPAGEM
+                 ========================================== -->
+            <g transform="translate(442, 26)">
+              <!-- Forma chanfrada diferenciada (hexagonal suave) -->
+              <polygon points="24,0 332,0 356,28 356,332 332,356 24,356 0,332 0,28" fill="#eef2ff" stroke="#1e2bfa" stroke-width="2.5"/>
+              <!-- Ícone Funil de Limpeza -->
+              <circle cx="52" cy="64" r="24" fill="#1e2bfa"/>
+              <path d="M 40 55 H 64 L 55 66 V 75 L 49 72 V 66 Z" fill="#fff"/>
+              <text x="90" y="58" fill="#1e2bfa" font-family="Space Grotesk" font-size="14" font-weight="700">2 · LIMPEZA (DUCKDB)</text>
+              <text x="90" y="83" fill="#111" font-family="Space Grotesk" font-size="25" font-weight="700">Camada Prata</text>
+
+              <text x="28" y="138" fill="#1e2bfa" font-family="Space Grotesk" font-size="40" font-weight="700">158,67 MB</text>
+              <rect x="28" y="152" width="248" height="28" rx="6" fill="#d1fae5"/>
+              <text x="40" y="171" fill="#059669" font-family="Space Grotesk" font-size="16" font-weight="700">−56,2% em disco  |  0,14 min</text>
+
+              <line x1="28" y1="196" x2="328" y2="196" stroke="#1e2bfa" stroke-opacity="0.18"/>
+              <text x="28" y="226" fill="#111" font-family="DM Sans" font-size="17">• Tipagem: date32, int32, double, bool</text>
+              <text x="28" y="256" fill="#111" font-family="DM Sans" font-size="17">• Sentinelas (#NULO, -1..-4) → NA</text>
+              <text x="28" y="286" fill="#111" font-family="DM Sans" font-size="17">• Poda de chaves sem uso (−22,5 MB)</text>
+              <text x="28" y="316" fill="#555963" font-family="DM Sans" font-size="16">SQL vetorizado em C++ (8 bases)</text>
+            </g>
+
+            <!-- ==========================================
+                 3. OURO: PRISMA/CUBO DE MODELAGEM DIMENSIONAL
+                 ========================================== -->
+            <g transform="translate(884, 26)">
+              <rect x="0" y="0" width="356" height="356" rx="18" fill="#fffbeb" stroke="#d97706" stroke-width="2.5"/>
+              <!-- Ícone Cubo/Modelagem -->
+              <circle cx="52" cy="64" r="24" fill="#d97706"/>
+              <path d="M 52 50 L 64 57 V 71 L 52 78 L 40 71 V 57 Z M 52 50 V 64 M 52 64 L 64 57 M 52 64 L 40 57" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/>
+              <text x="90" y="58" fill="#b45309" font-family="Space Grotesk" font-size="14" font-weight="700">3 · MODELAGEM (DUCKDB)</text>
+              <text x="90" y="83" fill="#111" font-family="Space Grotesk" font-size="25" font-weight="700">Camada Ouro</text>
+
+              <text x="28" y="138" fill="#b45309" font-family="Space Grotesk" font-size="40" font-weight="700">21,13 MB</text>
+              <rect x="28" y="152" width="268" height="28" rx="6" fill="#fef3c7"/>
+              <text x="40" y="171" fill="#b45309" font-family="Space Grotesk" font-size="16" font-weight="700">−94,2% vs. Bronze  |  0,04 min</text>
+
+              <line x1="28" y1="196" x2="328" y2="196" stroke="#d97706" stroke-opacity="0.22"/>
+              <text x="28" y="226" fill="#111" font-family="DM Sans" font-size="17">• Modelagem TSE × IBGE na Gold</text>
+              <text x="28" y="256" fill="#111" font-family="DM Sans" font-size="17">• 8 datamarts enxutos (10–20 col.)</text>
+              <text x="28" y="286" fill="#111" font-family="DM Sans" font-size="17">• Legado levava 14,09 min → ~2,4s</text>
+              <text x="28" y="316" fill="#555963" font-family="DM Sans" font-size="16">Prontos para R, PCA e regressões</text>
+            </g>
+
+            <!-- ==========================================
+                 4. ANÁLISES & CATÁLOGO: PAINEL ARREDONDADO
+                 ========================================== -->
+            <g transform="translate(1326, 26)">
+              <rect x="0" y="16" width="328" height="324" rx="28" fill="#ecfdf5" stroke="#059669" stroke-width="2.2"/>
+              <!-- Ícone Gráfico -->
+              <circle cx="52" cy="74" r="24" fill="#059669"/>
+              <rect x="41" y="75" width="5" height="10" rx="1" fill="#fff"/>
+              <rect x="49" y="68" width="5" height="17" rx="1" fill="#fff"/>
+              <rect x="57" y="61" width="5" height="24" rx="1" fill="#fff"/>
+              <text x="90" y="68" fill="#059669" font-family="Space Grotesk" font-size="14" font-weight="700">4 · SAÍDAS &amp; BI</text>
+              <text x="90" y="93" fill="#111" font-family="Space Grotesk" font-size="25" font-weight="700">Análises &amp; Docs</text>
+
+              <text x="28" y="148" fill="#059669" font-family="Space Grotesk" font-size="34" font-weight="700">19 Gráficos +</text>
+              <text x="28" y="184" fill="#059669" font-family="Space Grotesk" font-size="34" font-weight="700">Painel Executivo</text>
+
+              <line x1="28" y1="208" x2="300" y2="208" stroke="#059669" stroke-opacity="0.22"/>
+              <text x="28" y="238" fill="#111" font-family="DM Sans" font-size="17">• PCA, GLM (Odds Ratio) e HHI</text>
+              <text x="28" y="268" fill="#111" font-family="DM Sans" font-size="17">• Execução analítica em 5,5s–12,5s</text>
+              <text x="28" y="298" fill="#111" font-family="DM Sans" font-size="17">• Catálogo automático JSON / MD</text>
+            </g>
+
+            <!-- ==========================================
+                 BARRA INFERIOR: COMPACTAÇÃO PROGRESSIVA REAL
+                 ========================================== -->
+            <rect x="26" y="422" width="1628" height="112" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+            <text x="52" y="454" fill="#111" font-family="Space Grotesk" font-size="18" font-weight="700">Compactação real em disco (Parquet + compressão ZSTD):</text>
+
+            <!-- Barras proporcionais -->
+            <rect x="52" y="472" width="880" height="22" rx="6" fill="#1e2bfa" fill-opacity="0.28"/>
+            <text x="946" y="489" fill="#111" font-family="Space Grotesk" font-size="16" font-weight="700">Bronze: 361,95 MB (100%)</text>
+
+            <rect x="52" y="502" width="386" height="20" rx="6" fill="#1e2bfa"/>
+            <text x="452" y="518" fill="#1e2bfa" font-family="Space Grotesk" font-size="15" font-weight="700">Prata: 158,67 MB (43,8%)</text>
+
+            <rect x="740" y="502" width="52" height="20" rx="6" fill="#d97706"/>
+            <text x="804" y="518" fill="#b45309" font-family="Space Grotesk" font-size="15" font-weight="700">Ouro: 21,13 MB (5,8% do tamanho bruto)</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="../slide_bridge.js"></script>
+</body>
+</html>

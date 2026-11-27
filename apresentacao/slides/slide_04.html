@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slide 04 · Modelo Constelação</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .graph-wrap {
+      background: #ffffff;
+      border: 1.5px solid var(--primary-border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: 0 8px 24px rgba(17, 17, 17, 0.04);
+    }
+    .graph-wrap svg { width: 100%; height: auto; display: block; }
+  </style>
+</head>
+<body>
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="slide-top">
+        <span class="eyebrow">03 · Modelagem Dimensional</span>
+        <span class="slide-page-num">04 / 10</span>
+      </div>
+      <div class="headline-block reveal">
+        <h2>Modelo Constelação (Prata) → Ouro</h2>
+        <p class="subtitle"><strong>3 dimensões conformadas</strong> conectam <strong>5 fatos</strong> (0 órfãos) para gerar os 8 datamarts enxutos.</p>
+      </div>
+      <div class="content-area">
+        <div class="graph-wrap reveal">
+          <svg viewBox="0 0 1680 610" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="edgeArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#1e2bfa"/>
+              </marker>
+            </defs>
+
+            <!-- Arestas: Dimensões -> Fatos -->
+            <!-- dim_municipio (200, 120) para fato_indicadores, fato_votacao, fato_receitas, fato_despesas, dim_candidato -->
+            <path d="M 330 110 C 480 110, 480 70, 620 70" fill="none" stroke="#1e2bfa" stroke-width="2.2" marker-end="url(#edgeArrow)"/>
+            <path d="M 330 120 C 470 120, 470 180, 620 180" fill="none" stroke="#1e2bfa" stroke-width="2.2" marker-end="url(#edgeArrow)"/>
+            <path d="M 330 130 C 460 130, 460 290, 620 290" fill="none" stroke="#1e2bfa" stroke-width="2.2" marker-end="url(#edgeArrow)"/>
+            <path d="M 330 140 C 450 140, 450 400, 620 400" fill="none" stroke="#1e2bfa" stroke-width="2.2" marker-end="url(#edgeArrow)"/>
+            <line x1="180" y1="168" x2="180" y2="415" stroke="#1e2bfa" stroke-width="2.2" stroke-dasharray="6 4" marker-end="url(#edgeArrow)"/>
+
+            <!-- dim_partido (180, 295) para dim_candidato -->
+            <line x1="180" y1="338" x2="180" y2="415" stroke="#1e2bfa" stroke-width="2.2" marker-end="url(#edgeArrow)"/>
+
+            <!-- dim_candidato (330, 475) para fato_votacao, fato_receitas, fato_despesas, fato_bens -->
+            <path d="M 330 450 C 480 450, 480 198, 620 198" fill="none" stroke="#059669" stroke-width="2.2" marker-end="url(#edgeArrow)"/>
+            <path d="M 330 465 C 480 465, 480 308, 620 308" fill="none" stroke="#059669" stroke-width="2.2" marker-end="url(#edgeArrow)"/>
+            <path d="M 330 480 C 480 480, 480 418, 620 418" fill="none" stroke="#059669" stroke-width="2.2" marker-end="url(#edgeArrow)"/>
+            <path d="M 330 495 C 480 495, 480 530, 620 530" fill="none" stroke="#059669" stroke-width="2.2" marker-end="url(#edgeArrow)"/>
+
+            <!-- Rótulos das chaves nas arestas -->
+            <rect x="405" y="64" width="135" height="22" rx="5" fill="#fdfae7" stroke="#1e2bfa" stroke-opacity="0.25"/>
+            <text x="472" y="80" text-anchor="middle" fill="#1e2bfa" font-family="JetBrains Mono" font-size="12">cd_municipio_ibge</text>
+
+            <rect x="405" y="218" width="135" height="22" rx="5" fill="#fdfae7" stroke="#1e2bfa" stroke-opacity="0.25"/>
+            <text x="472" y="234" text-anchor="middle" fill="#1e2bfa" font-family="JetBrains Mono" font-size="12">cd_municipio_tse</text>
+
+            <rect x="415" y="486" width="118" height="22" rx="5" fill="#ecfdf5" stroke="#059669" stroke-opacity="0.35"/>
+            <text x="474" y="502" text-anchor="middle" fill="#059669" font-family="JetBrains Mono" font-size="12">sq_candidato</text>
+
+            <!-- Arestas: Fatos -> Ouro -->
+            <path d="M 990 70 C 1100 70, 1100 280, 1210 280" fill="none" stroke="#555963" stroke-width="2" marker-end="url(#edgeArrow)"/>
+            <path d="M 990 190 C 1090 190, 1090 290, 1210 290" fill="none" stroke="#555963" stroke-width="2" marker-end="url(#edgeArrow)"/>
+            <path d="M 990 300 C 1090 300, 1090 300, 1210 300" fill="none" stroke="#555963" stroke-width="2" marker-end="url(#edgeArrow)"/>
+            <path d="M 990 410 C 1090 410, 1090 310, 1210 310" fill="none" stroke="#555963" stroke-width="2" marker-end="url(#edgeArrow)"/>
+            <path d="M 990 530 C 1100 530, 1100 320, 1210 320" fill="none" stroke="#555963" stroke-width="2" marker-end="url(#edgeArrow)"/>
+
+            <!-- NÓS: DIMENSÕES (ESQUERDA) -->
+            <rect x="30" y="64" width="300" height="104" rx="14" fill="#eef1ff" stroke="#1e2bfa" stroke-width="2.2"/>
+            <text x="50" y="96" fill="#1e2bfa" font-family="JetBrains Mono" font-size="18" font-weight="600">dim_municipio</text>
+            <text x="50" y="124" fill="#111" font-family="Space Grotesk" font-size="17" font-weight="700">5.571 municípios (27 UFs)</text>
+            <text x="50" y="148" fill="#555963" font-family="DM Sans" font-size="14">UF, região, porte, capital, TSE↔IBGE</text>
+
+            <rect x="30" y="242" width="300" height="96" rx="14" fill="#eef1ff" stroke="#1e2bfa" stroke-width="2.2"/>
+            <text x="50" y="274" fill="#1e2bfa" font-family="JetBrains Mono" font-size="18" font-weight="600">dim_partido</text>
+            <text x="50" y="302" fill="#111" font-family="Space Grotesk" font-size="17" font-weight="700">29 partidos únicos</text>
+            <text x="50" y="324" fill="#555963" font-family="DM Sans" font-size="14">nr_partido, sg_partido, federação</text>
+
+            <rect x="30" y="420" width="300" height="114" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2.2"/>
+            <text x="50" y="452" fill="#059669" font-family="JetBrains Mono" font-size="18" font-weight="600">dim_candidato</text>
+            <text x="50" y="480" fill="#111" font-family="Space Grotesk" font-size="17" font-weight="700">463.731 candidatos</text>
+            <text x="50" y="504" fill="#555963" font-family="DM Sans" font-size="14">Cargo, gênero, raça, 2º turno, localidade</text>
+
+            <!-- NÓS: FATOS (CENTRO) -->
+            <rect x="620" y="28" width="370" height="86" rx="12" fill="#fdfae7" stroke="#1e2bfa" stroke-width="2"/>
+            <text x="640" y="60" fill="#1e2bfa" font-family="JetBrains Mono" font-size="17" font-weight="600">fato_indicadores_municipio</text>
+            <text x="640" y="88" fill="#555963" font-family="DM Sans" font-size="15">5.570 mun. × 19 col. (Censo 2022 + PIB 2023)</text>
+
+            <rect x="620" y="142" width="370" height="86" rx="12" fill="#fdfae7" stroke="#1e2bfa" stroke-width="2"/>
+            <text x="640" y="174" fill="#1e2bfa" font-family="JetBrains Mono" font-size="17" font-weight="600">fato_votacao</text>
+            <text x="640" y="202" fill="#555963" font-family="DM Sans" font-size="15">717.171 reg. (votos nominais/válidos, zona)</text>
+
+            <rect x="620" y="254" width="370" height="86" rx="12" fill="#fdfae7" stroke="#1e2bfa" stroke-width="2"/>
+            <text x="640" y="286" fill="#1e2bfa" font-family="JetBrains Mono" font-size="17" font-weight="600">fato_receitas</text>
+            <text x="640" y="314" fill="#555963" font-family="DM Sans" font-size="15">2.041.160 reg. (esfera, UF, dobradinha)</text>
+
+            <rect x="620" y="366" width="370" height="86" rx="12" fill="#fdfae7" stroke="#1e2bfa" stroke-width="2"/>
+            <text x="640" y="398" fill="#1e2bfa" font-family="JetBrains Mono" font-size="17" font-weight="600">fato_despesas</text>
+            <text x="640" y="426" fill="#555963" font-family="DM Sans" font-size="15">4.453.470 reg. (origem, CNAE, fornecedor)</text>
+
+            <rect x="620" y="484" width="370" height="86" rx="12" fill="#fdfae7" stroke="#1e2bfa" stroke-width="2"/>
+            <text x="640" y="516" fill="#1e2bfa" font-family="JetBrains Mono" font-size="17" font-weight="600">fato_bens</text>
+            <text x="640" y="544" fill="#555963" font-family="DM Sans" font-size="15">911.354 bens atômicos (tipo e valor)</text>
+
+            <!-- NÓ DESTINO: CAMADA OURO (DIREITA) -->
+            <rect x="1210" y="70" width="440" height="460" rx="16" fill="#eef1ff" stroke="#1e2bfa" stroke-width="2.5"/>
+            <text x="1235" y="112" fill="#1e2bfa" font-family="Space Grotesk" font-size="22" font-weight="700">8 Datamarts Ouro (21,1 MB)</text>
+            <text x="1235" y="154" fill="#111" font-family="JetBrains Mono" font-size="15">• ouro_pca_municipios (5.569×20)</text>
+            <text x="1235" y="194" fill="#111" font-family="JetBrains Mono" font-size="15">• ouro_representatividade_municipal (5.569×18)</text>
+            <text x="1235" y="234" fill="#111" font-family="JetBrains Mono" font-size="15">• ouro_eficiencia_anomalias_cand (463k×20)</text>
+            <text x="1235" y="274" fill="#111" font-family="JetBrains Mono" font-size="15">• ouro_patrimonio_composicao (463k×18)</text>
+            <text x="1235" y="314" fill="#111" font-family="JetBrains Mono" font-size="15">• ouro_estrutura_gastos_campanha (34k×10)</text>
+            <text x="1235" y="354" fill="#111" font-family="JetBrains Mono" font-size="15">• ouro_centralizacao_partidaria (425×16)</text>
+            <text x="1235" y="394" fill="#111" font-family="JetBrains Mono" font-size="15">• ouro_concentracao_zonas (62k×14)</text>
+            <text x="1235" y="434" fill="#111" font-family="JetBrains Mono" font-size="15">• ouro_fornecedores_rede (113k×12)</text>
+            <rect x="1235" y="464" width="390" height="42" rx="8" fill="#059669"/>
+            <text x="1430" y="490" text-anchor="middle" fill="#fff" font-family="Space Grotesk" font-size="16" font-weight="700">0 registros órfãos (6/6 checagens OK)</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="../slide_bridge.js"></script>
+</body>
+</html>

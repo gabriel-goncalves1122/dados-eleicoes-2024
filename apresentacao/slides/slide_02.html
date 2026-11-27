@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slide 02 · APIs, Decisões e Dados Brutos</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="slide-top">
+        <span class="eyebrow">01 · Contexto, APIs &amp; Dados Brutos</span>
+        <span class="slide-page-num">02 / 10</span>
+      </div>
+      <div class="headline-block reveal">
+        <h2>APIs de Coleta, Decisões de Ingestão &amp; Base Bruta</h2>
+        <p class="subtitle">Integração nacional de contas eleitorais e indicadores socioeconômicos nos <strong>5.569 municípios</strong> brasileiros.</p>
+      </div>
+      <div class="content-area">
+        <div class="grid-2 reveal">
+          <!-- ESQUERDA: APIs + DECISÕES EM TÓPICOS -->
+          <div class="card">
+            <div>
+              <h3>APIs &amp; Decisões de Engenharia (Bronze)</h3>
+              <div class="section-subhead">Fontes &amp; Endpoints</div>
+              <ul class="decision-list">
+                <li><strong>CDN TSE Dados Abertos:</strong> 4 ZIPs oficiais (27 UFs) baixados via <code>curl</code> com <em>retry</em>, descartando <code>*_BRASIL</code> e <code>*_ZZ</code> para evitar duplicidade.</li>
+                <li><strong>API IBGE SIDRA (<code>sidrar</code>):</strong> 9 tabelas do Censo 2022 e PIB/VAB (<span class="code-tag">4709</span> <span class="code-tag">5938</span> <span class="code-tag">9605</span> <span class="code-tag">9514</span> <span class="code-tag">9543</span> <span class="code-tag">9923</span> <span class="code-tag">6804</span> <span class="code-tag">6805</span>).</li>
+                <li><strong>De-Para Territorial:</strong> mapeamento híbrido TSE (5d) ↔ IBGE (7d).</li>
+              </ul>
+
+              <div class="section-subhead">Decisões de Arquitetura na Coleta</div>
+              <ul class="decision-list">
+                <li><strong>Streaming C++ sem estourar RAM:</strong> leitura direta de múltiplos CSVs via DuckDB (<code>read_csv</code> + <code>union_by_name</code>).</li>
+                <li><strong>Fidelidade Bruta:</strong> <code>all_varchar=true</code> e <code>latin-1</code> preservam zeros à esquerda e acentuação antes da limpeza.</li>
+                <li><strong>Parquet Único ZSTD:</strong> 1 arquivo consolidado por base, eliminando partições fragmentadas por UF.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- DIREITA: TODOS OS DATASETS RETORNADOS -->
+          <div class="card">
+            <div>
+              <h3>Datasets Retornados (Camada Bronze)</h3>
+              <ul class="data-list">
+                <li><span><code>tse/candidatos.parquet</code> · candidaturas</span><strong>463.935 reg.</strong></li>
+                <li><span><code>tse/votacao.parquet</code> · votos por zona/turno</span><strong>717.171 reg.</strong></li>
+                <li><span><code>tse/receitas.parquet</code> · arrecadação</span><strong>2.041.160 reg.</strong></li>
+                <li><span><code>tse/despesas.parquet</code> · gastos contratados</span><strong>4.453.470 reg.</strong></li>
+                <li><span><code>tse/bens.parquet</code> · patrimônio atômico</span><strong>911.354 reg.</strong></li>
+                <li><span><code>ibge/*.parquet</code> · 9 bases Censo 22 + PIB 23</span><strong>5.570 mun.</strong></li>
+                <li><span><code>depara_tse_ibge.parquet</code> · chave nacional</span><strong>5.571 mun.</strong></li>
+              </ul>
+            </div>
+            <div class="pill-note">
+              Total consolidado na Bronze: <strong>8,58 milhões de registros</strong> em <strong>15 arquivos Parquet (361,95 MB)</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="../slide_bridge.js"></script>
+</body>
+</html>
